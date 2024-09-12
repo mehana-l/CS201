@@ -1,0 +1,31 @@
+---
+title: "dplyr_penguin.qmd"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(janitor)
+library(palmerpenguins)
+```
+
+```{r}
+penguins <- read_csv(here("data/penguins_lter.csv")) 
+```
+
+```{r}
+penguins <- palmerpenguins :: penguins
+```
+
+```{r}
+clean_names(penguins)
+```
+
+```{r}
+penguins %>%
+  filter(Species == "Gentoo", bill_depth_mm >= 15.5)
+```
+
+## 3. Filtering Penguin Data

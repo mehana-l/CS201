@@ -14,7 +14,7 @@ library(palmerpenguins)
 library(janitor)
 library(plotly)
 library(DataExplorer)
-
+library(dplyr)
 ```
 
 #### Reading in Data w/ [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html)
@@ -413,6 +413,8 @@ ggplot(data = average_species_flipper_length, aes(x = species, y = average_flipp
   geom_bar(stat = "identity")+
   theme_bw() +
   scale_fill_viridis_d()+
+  coord_flip() + 
+  theme(legend.position = "none") +
   labs(title = "Average Flipper Length", 
        subtitle = "Palmer Penguins",
        x = "species",
@@ -427,7 +429,7 @@ Let's say the only way to get the penguins data was via the uri. At the top of t
 -   We can use the function full_join()
 
 ```{r}
-# gentoo_adelie_penguins_data_joined <- full_join(gentoo_penguins_data_from_url, adelie_penguins_data_from_url)
+gentoo_adelie_penguins_data_joined <- full_join(gentoo_penguins_data_from_url, adelie_penguins_data_from_url)
 ```
 
 #### Final Exercises {style="color: #B8860B;"}
@@ -437,3 +439,12 @@ Let's say the only way to get the penguins data was via the uri. At the top of t
 2.  How many penguins live on Torgersen Island?
 3.  Create a dataframe that has the average culmen depth for each species
     1.  Make a bar plot of the new dataframe with species on the x axis and average culmen depth on the y axis
+
+```{r}
+ggplot(data = penguins_data_from_csv aes(x = body_mass_g, y = species, species = fill)) +
+  geom_boxplot() +
+  labs(title = "Palmer Penguins",
+       subtitle = "Bodymass of species",
+       x = "body mass",
+       y = "species")
+```
