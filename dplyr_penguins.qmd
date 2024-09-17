@@ -9,6 +9,7 @@ library(tidyverse)
 library(plotly)
 library(janitor)
 library(palmerpenguins)
+library(dplyr)
 ```
 
 ```{r}
@@ -24,8 +25,35 @@ clean_names(penguins)
 ```
 
 ```{r}
-penguins %>%
-  filter(Species == "Gentoo", bill_depth_mm >= 15.5)
+gentoo_penguins_long_bill <- penguins %>%
+  filter(species == "Gentoo", bill_depth_mm >= 15.5)
+```
+
+```{r}
+ggplot(data = penguins, aes(x = bill_depth_mm, fill = species))
+geom_histogram()
+scale_fill_viridis_d()
+
 ```
 
 ## 3. Filtering Penguin Data
+
+```{r}
+penguins %>%
+  filter(sex == "male", island == "Dream" | island == "Biscoe")
+```
+
+```{r}
+penguins %>%
+  filter(species == "Adelie", sex == "female", bill_length_mm < 35)
+```
+
+```{r}
+penguins %>%
+  filter(sex == "female", species == "Chinstrap", island == "Dream" | island == "Torgersen") 
+```
+
+```{r}
+penguins %>%
+  filter(species == "Gentoo" | body_mass_g > 4500)
+```

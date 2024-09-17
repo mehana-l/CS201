@@ -1,0 +1,47 @@
+---
+title: "reading_in_data"
+format: html
+editor: visual
+---
+
+## Read in Data
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(janitor)
+```
+
+```{r}
+mtcars <- datasets::mtcars
+```
+
+```{r}
+?mtcars
+```
+
+Lets examine the relationship between weight and miles per gallon.
+
+```{r}
+cars_wt_mpg <- ggplot(data = mtcars, aes(x = mpg, y = wt, point = model, color = hp)) +
+geom_point() +
+  labs(title = "weight to Miles per gallon",
+    x = "Miles Per Galon",
+        y = "Wieght of Vehicle")
+cars_wt_mpg
+```
+
+you can also assign #label = model does the same as #point = model
+
+```{r}
+ggplotly(cars_wt_mpg)
+```
+
+How do we change it so that the row names are the collum names?
+
+```{r}
+mtcars <- mtcars %>%
+  rownames_to_column("model")
+```
+
+#we have to runt he above script before we run our scatter plot because it changed the column name so we know what model car is coresponding to the point.
