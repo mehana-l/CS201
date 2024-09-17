@@ -15,6 +15,7 @@ library(janitor)
 library(plotly)
 library(DataExplorer)
 library(dplyr)
+library(stringr)
 ```
 
 #### Reading in Data w/ [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/articles/intro.html)
@@ -441,15 +442,50 @@ gentoo_adelie_penguins_data_joined <- full_join(gentoo_penguins_data_from_url, a
     1.  Make a bar plot of the new dataframe with species on the x axis and average culmen depth on the y axis
 
 ```{r}
-ggplot(data = penguins_data_from_csv, aes(x = body_mass_g, y = species, species = fill)) +
+penguin_bm_speceis <- ggplot(data = penguins_data_from_csv, aes(x = body_mass_g, y = species, fill = species)) +
   geom_boxplot() +
+  theme_bw() +
+#wraping y column text
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +
+  
   scale_fill_viridis_d() +
   labs(title = "Palmer Penguins",
-       subtitle = "Bodymass of species",
-       x = "body mass",
-       y = "species")
+       subtitle = "Bodymass of Species",
+       x = "Body Mass",
+       y = "Species")
+penguin_bm_speceis
 ```
+
+lets make it interactive
+
+```{r}
+ggplotly(penguin_bm_speceis)
+```
+
+How many penguins on Torgersen? can call using unique or using table function
 
 ```{r}
 table(penguins_data_from_csv$island)
+
 ```
+
+There are 52 penguins on Togersen in our data set!
+
+Now lets make a data frame that has the average culmen depth for each species.
+
+```{r}
+average_culmen_species <- penguins_data_from_csv %>% 
+  group_by(species) %>% 
+  summarise(average_culmen_species = mean(culmen_depth_mm, na.rm = TRUE))
+```
+
+now lets use the data frame #avg_culmen_species to plot the results
+
+```{r}
+ggplot(data = average_culmen_species, aes(x = species, y = average_culem_species)) + 
+  geom_bar(stat = "identity") +
+  
+
+```
+
+ggplot(data = average_species_body_mass, aes(x = species, y = average_body_mass)) + geom_bar(stat = "identity")
