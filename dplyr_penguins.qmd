@@ -30,9 +30,9 @@ gentoo_penguins_long_bill <- penguins %>%
 ```
 
 ```{r}
-ggplot(data = penguins, aes(x = bill_depth_mm, fill = species))
-geom_histogram()
-scale_fill_viridis_d()
+ggplot(data = penguins, aes(x = bill_depth_mm, fill = species)) +
+geom_histogram() +
+scale_fill_viridis_d() 
 
 ```
 
@@ -55,5 +55,312 @@ penguins %>%
 
 ```{r}
 penguins %>%
+  filter(body_mass_g <= 2900)
+```
+
+```{r}
+penguins %>%
+  filter(species != "Adelie")
+```
+
+### 1. Filter practice activities
+
+### 1)
+
+```{r}
+penguins %>%
+  filter(species == "Gentoo", bill_depth_mm > 15.5)
+```
+
+## 2)
+
+```{r}
+penguins %>%
+  filter(island == "Dream", island == "Dream")
+
+```
+
+3\)
+
+```{r}
+penguins %>%
+  filter(sex == "female", species == "Adelie", bill_length_mm < 35)
+```
+
+4.  4\) Create a subset from `penguins` containing observations for female chinstrap penguins on Dream and Torgersen Islands.
+
+```{r}
+penguins %>%
+  filter(species == "Chinstrap", sex == "female", island == "Torgersen" | island == "Dream")
+```
+
+5.  Create a subset from `penguins` that contains penguins that are either gentoos **OR** have a body mass greater than 4500 g.
+
+```{r}
+penguins %>%
   filter(species == "Gentoo" | body_mass_g > 4500)
+
+```
+
+## **4. dplyr::select() activities**
+
+1.  Starting with the `penguins` data, only keep the `body_mass_g` variable.
+
+```{r}
+penguins %>%
+  select(body_mass_g)
+```
+
+2.  Starting with the `penguins` data, keep columns from `bill_length_mm` to `body_mass_g`, and `year`
+
+```{r}
+penguins %>%
+  select(bill_length_mm : body_mass_g, year)
+```
+
+3.  Starting with the `penguins` data, keep all columns except `island`
+
+```{r}
+penguins %>%
+  select(!c(island))
+```
+
+3.  From `penguins`, keep all variables *except* `species`, `sex` and `year`.
+
+```{r}
+penguins %>%
+  select(!c(species, sex, year))
+
+```
+
+3.  From `penguins`, keep the `species` column and any columns that end with “mm”.
+
+```{r}
+penguins %>%
+  select(species, ends_with("mm"))
+```
+
+3.  From `penguins`, keep any columns that contain “bill” OR end with “mm”.
+
+```{r}
+penguins %>%
+  select(contains("bill"),ends_with("mm"))
+
+```
+
+3.  In a piped sequence, starting from `penguins`:
+    -   Only keep observations for female penguins observed on Dream Island, THEN…
+
+    -   Keep variables `species`, and any variable starting with “bill”
+
+```{r}
+penguins %>%
+   filter(sex == "female", island == "Dream") %>%
+  select(species, starts_with("bill"))
+ 
+
+```
+
+### **RELOCATE PRACTICE ACTIVITIES**
+
+1\) Starting with `penguins`, move the `species` variable to before the `sex` variable.
+
+```{r}
+penguins %>%
+  relocate(species, .before = sex)
+
+```
+
+2\) Starting with `penguins`, relocate the `bill_length_mm` variable so that it is the first column.
+
+```{r}
+penguins %>%
+  relocate(bill_length_mm)
+```
+
+3\) Move any factor variables (hint: `is.factor`) to after any integer variables (`is.integer`).
+
+```{r}
+penguins %>%
+  relocate(where(is.factor),.after = where(is.integer))
+```
+
+## **dplyr::rename() activities**
+
+1\) Starting with `penguins`, rename the `flipper_length_mm` column to `flipper_mm`.
+
+```{r}
+penguins %>%
+  rename(flipper_mm = flipper_length_mm)
+
+```
+
+2\) Starting with `penguins`, rename the `island` column to `island_name` and the `species` column to `penguin_spp`.
+
+```{r}
+penguins %>%
+  rename(island_name = island, penguin_spp = species)
+```
+
+3\) Starting with `penguins`, convert any column names that start with “bill” to upper case.
+
+```{r}
+penguins %>%
+  rename_with(toupper, starts_with("bill"))
+```
+
+## **dplyr::mutate()**
+
+1)Add a column to `penguins` that contains a new column `flipper_m`, which is the `flipper_length_mm` (flipper length in millimeters) converted to units of meters.
+
+```{r}
+penguins %>%
+  mutate(flipper_length_m = flipper_length_mm / 1000)
+```
+
+2\) The `year` column in `penguins` is currently an integer. Add a new column named `year_fct` that is the year converted to a factor (hint: `as.factor()`).
+
+```{r}
+penguins %>%
+  mutate(year_fct = as.factor(year))
+
+```
+
+3\) To `penguins`, add a new column `mass_lb` that contains penguin body mass, currently in grams, converted to pounds (1 gram = 0.0022 lb).
+
+```{r}
+penguins %>%
+  mutate(mass_lb = body_mass_g * 0.0022)
+```
+
+4\) Starting with `penguins`, do the following within a single `mutate()` function:
+
+-   Convert the `species` variable to a character
+
+-   Add a new column (called `flipper_cm` with flipper length in centimeters)
+
+-   Convert the `island` column to lowercase
+
+```{r}
+penguins %>%
+  mutate(species = as.character(species), flipper_cm = flipper_length_mm * 10, toupper(island))
+```
+
+## **dplyr::group_by() %\>% summarize()**
+
+1\) Starting with `penguins`, create a summary table containing the maximum and minimum length of flippers (call the columns `flip_max` and `flip_min`) for chinstrap penguins, grouped by island.
+
+```{r}
+penguins %>%
+  filter(species == "Chinstrap") %>%
+  group_by(island) %>%
+  summarise(flip_max = max(flipper_length_mm), flip_min = min(flipper_length_mm))
+```
+
+2\) Starting with `penguins`, group the data by species and year, then create a summary table containing the mean bill depth (call this `bill_depth_mean`) and mean bill length (call this `bill_length_mean`) for each group.
+
+```{r}
+penguins %>%
+  group_by(species, year) %>%
+  summarize(bill_depth_mean = mean(bill_depth_mm, na.rm = TRUE), 
+            bill_length_mean = mean(bill_length_mm, na.rm = TRUE))
+```
+
+3\) Starting with `penguins`, in a piped sequence:
+
+-   Add a new column called `bill_ratio` that is the ratio of bill length to bill depth (hint: `mutate()`)
+
+-   Only keep columns `species` and `bill_ratio`
+
+-   Group the data by `species`
+
+-   Create a summary table containing the mean of the `bill_ratio` variable, by species (name the column in the summary table `bill_ratio_mean`)
+
+```{r}
+penguins %>%
+  mutate(bill_ratio = bill_length_mm / bill_depth_mm) %>%
+  select(species, bill_ratio) %>%
+group_by(species) %>%
+summarize(bill_ratio_mean = mean(bill_ratio, na.rm = TRUE))
+
+```
+
+## **dplyr::across()**
+
+1)Starting with `penguins`, group data by island then use `across()` to find the median value of groups for any columns containing the string “mm”. The names in the resulting table should be the original column name followed by an underscore, then the word “median” (e.g. colname_median).
+
+```{r}
+penguins %>%
+  group_by(island) %>%
+  summarise(across(contains("mm"),
+                   median,
+                   na.rm = TRUE,
+                   .names = "colname_median"))
+```
+
+2)Starting with `penguins`, only keep observations for Adelie penguins, then use `across()` to find the maximum value for any numeric variable (hint: `where(is.numeric)`) for each island (i.e. group by island).
+
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  group_by(island) %>%
+  summarise(across(where(is.numeric), max,na.rm = TRUE))
+  
+```
+
+3)Starting from `penguins`, write a piped sequence to:
+
+-   Exclude penguins observed on Biscoe Island
+
+-   Only keep variables `species` through `body_mass_g`
+
+-   Rename the `species` variable to `spp_penguin`
+
+-   Group the data by `spp_penguin`
+
+-   Find the mean value for any variable containing the string “length”, by penguin species, with column names updated to the original column name appended with "\_max" at the end
+
+    ```{r}
+    penguins %>%
+      filter(island != "Biscoe") %>%
+    rename(spp_penguin = species) %>%
+    group_by(spp_penguin) %>%
+    summarize(across(contains("length"), mean, na.rm = TRUE, .names = "{.col}_avg"))
+    ```
+
+## **dplyr::count()**
+
+1)Starting with `penguins`, find counts of observation by species, island and year.
+
+```{r}
+penguins %>%
+  count(species, island, year)
+```
+
+2\) Starting with `penguins`, filter to only keep Adelie and gentoo penguins, then find counts by species and sex.
+
+```{r}
+penguins %>%
+  filter(species %in% c("Adelie", "Gentoo")) %>%
+count(species, sex)
+```
+
+## **dplyr::case_when()**
+
+1)Add a new column to `penguins` called `study_year` that contains:
+
+-   “Year 1” if the year is 2007
+
+-   “Year 2” if the year is 2008
+
+-   “Year 3” if the year is 2009
+
+```{r}
+
+```
+
+2\) Starting with `penguins`, only keep observations for chinstrap penguins, then only keep the `flipper_length_mm` and `body_mass_g` variables. Add a new column called `fm_ratio` that contains the ratio of flipper length to body mass for each penguin. Next, add another column named `ratio_bin` which contains the word “high” if `fm_ratio` is greater than or equal to 0.05, “low” if the ratio is less than 0.05, and “no record” if anything else (e.g. `NA`).
+
+```{r}
+
 ```
