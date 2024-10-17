@@ -10,6 +10,7 @@ editor: visual
 library(tidyverse)
 library(plotly)
 library(janitor)
+library(ggpubr)
 ```
 
 ```{r}
@@ -20,7 +21,41 @@ mtcars <- datasets::mtcars
 ?mtcars
 ```
 
+How do we change it so that the row names are the collumn names?
+
+```{r}
+mtcars <- mtcars %>%
+  rownames_to_column("model")
+```
+
 Lets examine the relationship between weight and miles per gallon.
+
+```{r}
+cars_wt_mpg <- ggplot(data = mtcars, aes(x = mpg, y = wt, point = model, color = hp)) +
+geom_point() +
+geom_smooth() +
+  stat_cor() +
+  labs(title = "weight to Miles per gallon",
+    x = "Miles Per Galon",
+        y = "Wieght of Vehicle")
+cars_wt_mpg
+```
+
+```{r}
+mtcars_split <- mtcars %>%
+separate(model, into = c("make", "model"), sep = " ")
+```
+
+you can also assign #label = model does the same as #point = model
+
+```{r}
+ggplotly(cars_wt_mpg)
+
+```
+
+#we have to runt he above script before we run our scatter plot because it changed the column name so we know what model car is coresponding to the point.
+
+lets add text to the points we can use #geom_label or #geom_text
 
 ```{r}
 cars_wt_mpg <- ggplot(data = mtcars, aes(x = mpg, y = wt, point = model, color = hp)) +
@@ -31,17 +66,23 @@ geom_point() +
 cars_wt_mpg
 ```
 
-you can also assign #label = model does the same as #point = model
+What is the avergae mpg for each car manufacturer, please plot the results.
 
 ```{r}
-ggplotly(cars_wt_mpg)
+average_cars_mpg <- mtcars_split %>%
+  group_by(make)%>%
+  summarise(avg_mpg = mean(mpg))
+average_cars_mpg
 ```
-
-How do we change it so that the row names are the collum names?
 
 ```{r}
-mtcars <- mtcars %>%
-  rownames_to_column("model")
+mtcars_split %>%
+  select(make, mpg) %>%
+  summarise(avg_mpg = mean(mpg))
 ```
 
-#we have to runt he above script before we run our scatter plot because it changed the column name so we know what model car is coresponding to the point.
+```{r}
+
+ggplot(data = average_cars_mpg, aes(x = avg_mpg, y = make, fill = avg_mpg)) +
+       geom_bar(stat = "identity")
+```

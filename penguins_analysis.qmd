@@ -474,7 +474,7 @@ There are 52 penguins on Togersen in our data set!
 Now lets make a data frame that has the average culmen depth for each species.
 
 ```{r}
-average_culmen_species <- penguins_data_from_csv %>% 
+avg_culmen_species <- penguins_data_from_csv %>% 
   group_by(species) %>% 
   summarise(average_culmen_species = mean(culmen_depth_mm, na.rm = TRUE))
 ```
@@ -482,10 +482,17 @@ average_culmen_species <- penguins_data_from_csv %>%
 now lets use the data frame #avg_culmen_species to plot the results
 
 ```{r}
-ggplot(data = average_culmen_species, aes(x = species, y = average_culem_species)) + 
-  geom_bar(stat = "identity") +
+ggplot(data = average_culmen_species, aes(x = species, y = average_culmen_species, fill = species)) +
+  geom_bar(stat = "identity")+
+  theme_bw() +
+  scale_fill_viridis_d()+
+  coord_flip() + 
+  theme(axis.text.y = element_text(angle = 25, hjust = 1)) +
+  theme(legend.position = "none") +
+  labs(title = "Average Culmen Length", 
+       subtitle = "Palmer Penguins",
+       x = "Species",
+       y = "Culmen Length(mm)")
   
 
 ```
-
-ggplot(data = average_species_body_mass, aes(x = species, y = average_body_mass)) + geom_bar(stat = "identity")
