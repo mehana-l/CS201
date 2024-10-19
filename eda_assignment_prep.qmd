@@ -13,6 +13,7 @@ editor: visual
 library(here)
 library(tidyverse)
 library(janitor)
+library(dplyr)
 ```
 
 ### Data
@@ -48,7 +49,7 @@ skimdata_poke <- skimr:: skim(pokedata)
 summary(pokedata)
 ```
 
-### Categorical vs. Continuous
+### Categorical vs. Numeric
 
 ```{r}
 class(pokedata$number)
@@ -74,35 +75,30 @@ What are some variables of interest to you?
 
 ### Libraries
 
-```{r}
-library(here)
-library(tidyverse)
-library(janitor)
-```
-
 ### Data
 
 ```{r}
-
+np_species <- read_csv(here("data/most_visited_nps_species_data.csv"))
 ```
 
 ### Describe the data:
 
-Data author:
+Data author: by National Park Service uploaded by **Umer Haddii**
 
-Description:
+Description: Species identification and sightings in US national parks
 
-How many observations (rows) are there?
+How many observations (rows) are there? 61119 observations
 
-How many variables (columns) are there?
+How many variables (columns) are there? 28 variables
 
 ### Summary: Quick overview
 
 ```{r}
+summary(np_species)
 
 ```
 
-### Categorical vs. Continuous
+### Categorical vs. Numeric
 
 ```{r}
 
@@ -110,6 +106,10 @@ How many variables (columns) are there?
 
 How many categorical variables are there?
 
+-   There are
+
 How many continuous variables are there?
 
 What are some variables of interest to you?
+
+What kinds of questions could you explore with this data?
