@@ -71,7 +71,7 @@ What are some variables of interest to you?
 
 ------------------------------------------------------------------------
 
-## EDA Assignment Prep: \[Insert Data Name Here\]
+## EDA Assignment Prep: \[National Park species data\]
 
 ### Libraries
 
@@ -101,7 +101,15 @@ summary(np_species)
 ### Categorical vs. Numeric
 
 ```{r}
+class(np_species$Observations)
+np_species$Observations <- as.factor(np_species$Observations)
 
+summary(np_species$ParkName)
+np_species$ParkName <- as.factor(np_species$ParkName)
+class(np_species$ParkName)
+summary(np_species$ParkName)
+
+summary(np_species$CategoryName)
 ```
 
 How many categorical variables are there?
@@ -110,6 +118,20 @@ How many categorical variables are there?
 
 How many continuous variables are there?
 
+-   
+
 What are some variables of interest to you?
 
+-   The frequency of which parks
+
 What kinds of questions could you explore with this data?
+
+```{r}
+ggplot(np_species, aes(x= ParkName, Y= Observations)) +
+  geom_boxplot(binwidth = 1)
+```
+
+```{r}
+ggplot(np_species, aes( x = CategoryName, y = ParkName)) +
+  geom_histogram()
+```
