@@ -114,17 +114,19 @@ summary(np_species$CategoryName)
 
 How many categorical variables are there?
 
--   There are
+-   15
 
 How many continuous variables are there?
 
--   
+-   13
 
 What are some variables of interest to you?
 
--   The frequency of which parks
+-   The frequency of which parks had the most wildlife sightings.
 
 What kinds of questions could you explore with this data?
+
+-   What animal was seen the most?
 
 ```{r}
 ggplot(np_species, aes(x= ParkName, Y= Observations)) +
