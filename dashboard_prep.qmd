@@ -4,6 +4,15 @@ format: html
 editor: visual
 ---
 
+Libraries
+
+```{r}
+library(here)
+library(tidyverse)
+library(janitor)
+library(dplyr)
+```
+
 ## HW #7: Dashboard Prep
 
 You've looked at different types of data, conducted exploratory data analysis, manipulated data with dplyr and other tidy methods, created maps.... Now it's time to think about your flexdashboard final project!
@@ -12,16 +21,75 @@ You've looked at different types of data, conducted exploratory data analysis, m
 
 What data are you planning to use? Describe the data here and read it in below.
 
-```{r}
+\- The data I choose to use is going to be the national parks data. This is looking at different National Parks in the US and the species that were spotted in these parks.
 
+```{r}
+np_species <- read_csv("data/most_visited_nps_species_data.csv") #reading in the data
 ```
 
 ## Variables of interest
 
 Which variables are interesting to you? What kinds of questions will you be asking as you look into this data? What story is your data telling? Please include three questions here. The code chunk below is optional.
 
-```{r}
+\- I found that I was most interested in the type of species seen in Yellowstone, Yosemite, and Joshua Tree National Park
 
+```{r}
+specific_parks <- np_species %>%
+  filter(ParkName %in% c("Yellowstone National Park",
+                         "Grand Canyon National Park",
+                         "Joshua Tree National Park")) #selecing only these specific parks 
+
+filtered_category_data <- specific_parks %>%
+  group_by(CategoryName) %>%           # Group by the column of interest
+  filter(n() >= 1)      #keep everything over 1
+
+category_counts <- specific_parks %>%
+  count(CategoryName, sort = TRUE)      #selecting only categorynames and quantifying
+
+```
+
+Selecting specific parks to see the variation between the plots.
+
+Yellowstone
+
+```{r}
+yellowstone_category <- specific_parks %>%
+  filter(ParkName == ("Yellowstone National Park")) #selecing only yellowstone park
+
+filtered_yellowstone_category_data <- yellowstone_category %>%
+  group_by(CategoryName) %>%           # Group by the column of interest
+  filter(n() >= 1)      #keep everything over 1 keep it consistent
+
+yellowstone_category_counts <- yellowstone_category %>%
+  count(CategoryName, sort = TRUE)
+```
+
+Joshua Tree
+
+```{r}
+joshua_tree_category <- specific_parks %>%
+  filter(ParkName == ("Joshua Tree National Park")) #selecing only yellowstone park
+
+filtered_joshua_tree_category_data <- joshua_tree_category %>%
+  group_by(CategoryName) %>%           # Group by the column of interest
+  filter(n() >= 1)      #keep everything over 1 keep it consistent
+
+joshua_tree_category_counts <- joshua_tree_category %>%
+  count(CategoryName, sort = TRUE)
+```
+
+Grand Canyon
+
+```{r}
+grandcanyon_category <- specific_parks %>%
+  filter(ParkName == ("Grand Canyon National Park")) #selecing only yellowstone park
+
+filtered_grandcanyon_category_data <- grandcanyon_category %>%
+  group_by(CategoryName) %>%           # Group by the column of interest
+  filter(n() >= 1)      #keep everything over 1 keep it consistent
+
+grandcanyon_category_counts <- grandcanyon_category %>%
+  count(CategoryName, sort = TRUE)
 ```
 
 ## Plots
@@ -30,8 +98,56 @@ You can present plots as "answers" to your exploratory questions above. You'll n
 
 These can look really basic right now. We'll talk more about themes and layers next week.
 
-```{r}
+The first plot is looking at category observations in all three parks combined.
 
+```{r}
+ggplot(category_counts, aes(x = CategoryName, y = n)) +
+geom_col() +
+coord_flip() + 
+  theme_light() +
+  labs(title = "Number of Species Spotted",
+       subtitle = "Within Yellowstone, Joshua Tree, and Grand Canyon",
+       x = "Number of Observations",
+       y = "Category")
+```
+
+Looking at category observations just in Yellowstone
+
+```{r}
+ggplot(yellowstone_category_counts, aes(x = CategoryName, y = n)) +
+geom_col() +
+coord_flip() + 
+  theme_light() +
+  labs(title = "Number of Species Spotted",
+       subtitle = "Within Yellowstone",
+       x = "Number of Observations",
+       y = "Category")
+```
+
+Looking at category observations just in Joshua Tree
+
+```{r}
+ggplot(joshua_tree_category_counts, aes(x = CategoryName, y = n)) +
+geom_col() +
+coord_flip() + 
+  theme_light() +
+  labs(title = "Number of Species Spotted",
+       subtitle = "Within Joshua Tree",
+       x = "Number of Observations",
+       y = "Category")
+```
+
+Looking at category observations just in Grand Canyon
+
+```{r}
+ggplot(grandcanyon_category_counts, aes(x = CategoryName, y = n)) +
+geom_col() +
+coord_flip() + 
+  theme_light() +
+  labs(title = "Number of Species Spotted",
+       subtitle = "Grand Canyon",
+       x = "Number of Observations",
+       y = "Category")
 ```
 
 ## flexdashboards

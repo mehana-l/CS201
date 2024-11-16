@@ -78,7 +78,7 @@ What are some variables of interest to you?
 ### Data
 
 ```{r}
-np_species <- read_csv(here("data/most_visited_nps_species_data.csv"))
+np_species <- read_csv("data/most_visited_nps_species_data.csv")
 ```
 
 ### Describe the data:
@@ -129,11 +129,40 @@ What kinds of questions could you explore with this data?
 -   What animal was seen the most?
 
 ```{r}
-ggplot(np_species, aes(x= ParkName, Y= Observations)) +
-  geom_boxplot(binwidth = 1)
+specific_parks <- np_species %>%
+  filter(ParkName %in% c("Yellowstone National Park",
+                         "Grand Canyon National Park",
+                         "Joshua Tree National Park"))
 ```
 
 ```{r}
-ggplot(np_species, aes( x = CategoryName, y = ParkName)) +
-  geom_histogram()
+park_amount_of_observations <- ggplot(specific_parks, aes(x = ParkName, y = CategoryName)) +
+geom_point()
+
+# Display the basic plot
+park_amount_of_observations
+
+# Flip coordinates for horizontal orientation
+#park_amount_of_observations + coord_flip()
+
+# Convert to polar coordinates for a circular layout
+#park_amount_of_observations + coord_polar()
+
+```
+
+```{r}
+filtered_category_data <- specific_parks %>%
+  group_by(CategoryName) %>%           # Group by the column of interest
+  filter(n() >= 1)      #keep everything over 1
+
+category_counts <- specific_parks %>%
+  count(CategoryName, sort = TRUE) 
+```
+
+```{r}
+ggplot(category_counts, aes(x = CategoryName, y = n)) +
+geom_col() +
+coord_flip()+ 
+  theme_light()
+  
 ```
