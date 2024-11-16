@@ -249,3 +249,22 @@ ggplot(mpg, aes(x=displ, y=hwy)) +
   labs(title="Engine Displacement vs. Highway MPG", x="Displacement (L)", y="Highway MPG") +
   green_title
 ```
+
+```{r}
+mehana_theme <- theme(
+  panel.background = element_rect(fill = "lightblue"),
+  plot.background = element_rect(fill = "white"),
+  axis.text = element_text(size = 12, color = "blue", face = "italic"),
+  axis.title = element_text(size = 14, face = "bold"),
+  plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+  panel.grid.major = element_line(color = "grey", size = 0.5),
+  panel.grid.minor = element_line(color = "lightgrey", size = 0.25)
+  )
+
+
+ggplot(mpg, aes(x=year, y=hwy)) +
+  geom_point() +
+ mehana_theme() +
+  coord_cartesian(xlim = c(1995, 2010), ylim = c(5, 50)) + # Adjust limits as needed
+  scale_x_continuous(breaks = c(1999, 2008))
+```
