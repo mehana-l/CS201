@@ -175,3 +175,29 @@ Please make sure you include space for at least three plots and at least one des
 What projects have you found that look nice/doable?
 
 What layout(s) do you think you want to apply?
+
+---
+title: "Chart Sizing"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+## Row {data-height="650"}
+
+### Chart 1
+
+```{r}
+```
+
+## Row {data-height="350"}
+
+### Chart 2
+
+```{r}
+```
+
+### Chart 3
+
+```{r}
+```
