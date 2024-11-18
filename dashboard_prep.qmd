@@ -11,6 +11,8 @@ library(here)
 library(tidyverse)
 library(janitor)
 library(dplyr)
+library(plotly)
+library(ggthemes)
 ```
 
 ## HW #7: Dashboard Prep
@@ -101,14 +103,19 @@ These can look really basic right now. We'll talk more about themes and layers n
 The first plot is looking at category observations in all three parks combined.
 
 ```{r}
-ggplot(category_counts, aes(x = CategoryName, y = n)) +
+all_parks <- ggplot(category_counts, aes(x = CategoryName, y = n)) +
 geom_col() +
 coord_flip() + 
-  theme_light() +
+  theme_economist() +
   labs(title = "Number of Species Spotted",
        subtitle = "Within Yellowstone, Joshua Tree, and Grand Canyon",
        x = "Number of Observations",
        y = "Category")
+
+```
+
+```{r}
+ggplotly(all_parks)
 ```
 
 Looking at category observations just in Yellowstone
@@ -117,11 +124,12 @@ Looking at category observations just in Yellowstone
 ggplot(yellowstone_category_counts, aes(x = CategoryName, y = n)) +
 geom_col() +
 coord_flip() + 
-  theme_light() +
+  theme_economist() +
   labs(title = "Number of Species Spotted",
        subtitle = "Within Yellowstone",
-       x = "Number of Observations",
-       y = "Category")
+       x = "Category",
+       y = "Percent Number of Observations") +
+  scale_y_continuous(labels = scales::percent)
 ```
 
 Looking at category observations just in Joshua Tree
@@ -130,7 +138,7 @@ Looking at category observations just in Joshua Tree
 ggplot(joshua_tree_category_counts, aes(x = CategoryName, y = n)) +
 geom_col() +
 coord_flip() + 
-  theme_light() +
+  theme_economist() +
   labs(title = "Number of Species Spotted",
        subtitle = "Within Joshua Tree",
        x = "Number of Observations",
@@ -140,14 +148,20 @@ coord_flip() +
 Looking at category observations just in Grand Canyon
 
 ```{r}
-ggplot(grandcanyon_category_counts, aes(x = CategoryName, y = n)) +
+grand_canyon <- ggplot(grandcanyon_category_counts, aes(x = CategoryName, y = n)) +
 geom_col() +
 coord_flip() + 
-  theme_light() +
+  theme_economist() +
   labs(title = "Number of Species Spotted",
        subtitle = "Grand Canyon",
        x = "Number of Observations",
        y = "Category")
+```
+
+```{r}
+
+grand_canyon + coord_polar()
+
 ```
 
 ## flexdashboards
