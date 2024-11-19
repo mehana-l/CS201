@@ -32,7 +32,7 @@ library(ggplot2)
 
 5.  Your new API key will appear in the API key created dialog
 
-#### Unfortunately Google API has a subscription fee and so it may not be useful or easy to use for fun. 
+#### Unfortunately Google API has a subscription fee and so it may not be useful or easy to use for fun.
 
 ### To read in the key use this fucntion
 
@@ -123,6 +123,6 @@ ggmap(map_bbox) +
 
 ```
 
-### There are lots of other ways you can overlap and add data to ggmap using ggplot2. 
+### There are lots of other ways you can overlap and add data to ggmap using ggplot2.
 
 the only thing to remember when using ggmap is that you need a google API key to connect to google maps. You have to pay for this key which is not useful for project for school but can be useful when working on large funded projects.
