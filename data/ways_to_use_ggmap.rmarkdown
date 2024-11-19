@@ -1,5 +1,7 @@
 # 
 
+
+
 ---
 title: "ggmap package assignment #8"
 author: "Mehana Leafchild"
@@ -7,11 +9,15 @@ format: html
 editor: visual
 ---
 
+
+
 # What is ggmap?
 
 The package ggmap is a tool that allows users to visualize spatial data from other map services like google maps. This can be helpful when visualizing data sets. Rather than just looking at a table with number we can turn that table into a geographical visual representation.
 
 ## Lets read in our libraries
+
+
 
 ```{r}
 library(plotly)
@@ -19,6 +25,8 @@ library(dplyr)
 library(ggmap)
 library(ggplot2)
 ```
+
+
 
 ### Before we start we need to generate a Google maps API key.
 
@@ -36,13 +44,19 @@ library(ggplot2)
 
 ### To read in the key use this fucntion
 
+
+
 ```{r}
 register_google(key = "AIzaSyAVNo8B0Quo97QVBIzsIIJh6rQ0vu1J6k4", write = TRUE)
 ```
 
+
+
 ### Lets look at some specific functions in ggmap
 
 1\. Here is how to generate a standard map
+
+
 
 ```{r}
 # generate a map centered around Honolulu
@@ -52,7 +66,11 @@ map <- get_map(location = "Honolulu, Hawaii", zoom = 12, maptype = "terrain")
 ggmap(map)
 ```
 
+
+
 2.  Here is how to generate a map based on an address
+
+
 
 ```{r}
 # Geocode an address, finds a point based on address name like typing in a name in a search engine
@@ -64,7 +82,11 @@ map <- get_map(location = c(lon = location$lon, lat = location$lat), zoom = 15)
 ggmap(map)
 ```
 
+
+
 3.  Use longitude and latitude to plot. a point onto the map
+
+
 
 ```{r}
 # example data
@@ -81,14 +103,22 @@ ggmap(map) +
 
 ```
 
+
+
 4.  Customize the map using "terrain", "satellite", "roadmap", and "hybrid"
+
+
 
 ```{r}
 satellite_map <- get_map(location = "Honolulu, Hawaii", zoom = 12, maptype = "satellite")
 ggmap(satellite_map)
 ```
 
+
+
 Lets try hybrid to see the difference.
+
+
 
 ```{r}
 
@@ -96,7 +126,11 @@ hybrid_map <- get_map(location = "Honolulu, Hawaii", zoom = 12, maptype = "hybri
 ggmap(hybrid_map)
 ```
 
+
+
 5.  To create bounding boxes to assign the map an area use (bbox)
+
+
 
 ```{r}
 # Define a bounding box
@@ -108,7 +142,11 @@ ggmap(map_bbox)
 
 ```
 
+
+
 6.  Add heat or density maps using the bounding box we just created. You can use `stat_density2d()` from ggplot2 package
+
+
 
 ```{r}
 # Sample data
@@ -123,6 +161,9 @@ ggmap(map_bbox) +
 
 ```
 
+
+
 ### There are lots of other ways you can overlap and add data to ggmap using ggplot2. 
 
 the only thing to remember when using ggmap is that you need a google API key to connect to google maps. You have to pay for this key which is not useful for project for school but can be useful when working on large funded projects.
+

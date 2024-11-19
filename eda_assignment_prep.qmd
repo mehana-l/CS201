@@ -14,6 +14,7 @@ library(here)
 library(tidyverse)
 library(janitor)
 library(dplyr)
+library(plotly)
 ```
 
 ### Data
